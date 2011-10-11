@@ -39,13 +39,13 @@ for i in range(len(month)):
 		dates.append(newdate)
 
 # plot clear nights in blue, cloudy nights in red
-pylab.plot_date(cleardates,clearnum,'bo',label='Stargazing Clear Nights')
-pylab.plot_date(cloudydates,cloudynum,'ro',label='Stargazing Cloudy Nights')
+pylab.plot_date(cleardates,clearnum,'bo',label='Lecture/Film, Clear Weather')
+pylab.plot_date(cloudydates,cloudynum,'ro',label='Lecture/Film, Cloudy Weather')
 pylab.plot_date(otherdates,othernum,'go',label='Other Events')
 pylab.legend(loc=2)
 pylab.xlabel('Date')
 pylab.ylabel('Number of Attendees')
-pylab.title('Attendance at Outreach Lectures and Stargazing Nights')
+pylab.title('Attendance at Astronomy Outreach Events')
 increment = (dates[-1]-dates[0])/4.0
 xticklist = pylab.arange(dates[0],dates[-1],increment-0.1)
 pylab.xticks( xticklist )
