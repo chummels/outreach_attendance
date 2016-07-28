@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-import pylab, matplotlib, datetime, matplotlib.dates
+import matplotlib, datetime, matplotlib.dates
+import matplotlib.pyplot as plt
 import numpy as np
 
 # grab data from outreach_dates file and stick into arrays
 # format of text file has columns: month day year number(attendees) clear(bool)
-data = np.genfromtxt('outreach_dates.txt',dtype="int32")
+data = np.genfromtxt('caltech.txt',dtype="int32")
 month = data[:,0]
 day = data[:,1]
 year = data[:,2]
@@ -25,7 +26,7 @@ othernum = []
 for i in range(len(month)):
 	tempdate = datetime.date(year[i],month[i],day[i])
 	newdate =  matplotlib.dates.date2num(tempdate)
-	if (clear[i] == 1):
+	if (clear[i] == 0):
 		cleardates.append(newdate)
 		clearnum.append(number[i])
 		dates.append(newdate)
@@ -38,18 +39,29 @@ for i in range(len(month)):
 		cloudynum.append(number[i])
 		dates.append(newdate)
 
-# plot clear nights in blue, cloudy nights in red
-pylab.plot_date(cleardates,clearnum,'bo',label='Lecture/Film, Clear Weather')
-pylab.plot_date(cloudydates,cloudynum,'ro',label='Lecture/Film, Cloudy Weather')
-pylab.plot_date(otherdates,othernum,'go',label='Other Events')
-pylab.legend(loc=2)
-pylab.xlabel('Date')
-pylab.ylabel('Number of Attendees')
-pylab.title('Attendance at Astronomy Outreach Events')
-increment = (dates[-1]-dates[0])/4.0
-xticklist = pylab.arange(dates[0],dates[-1],increment-0.1)
-pylab.xticks( xticklist )
-pylab.axis([dates[0],dates[-1],0,400])		# reset the axes to max at 400
+start = datetime.date(2016, 01, 01)
+end = datetime.date(2016, 12, 31)
+startnum = matplotlib.dates.date2num(start)
+endnum = matplotlib.dates.date2num(end)
 
-pylab.savefig('outreach_dates.jpg')
-pylab.show()
+# plot clear nights in blue, cloudy nights in red
+if len(cleardates) > 0:
+    plt.plot_date(cleardates,clearnum,'bo',label='Lecture/Stargazing, Clear Weather')
+if len(cloudydates) > 0:
+    plt.plot_date(cloudydates,cloudynum,'ro',label='Lecture/Stargazing, Cloudy Weather')
+if len(otherdates) > 0:
+    plt.plot_date(otherdates,othernum,'go',label='Astronomy on Tap')
+plt.legend(loc=2, numpoints=1)
+plt.xlabel('Date')
+plt.ylabel('Number of Attendees')
+plt.title('Caltech Astronomy Outreach Event Attendance')
+#increment = (dates[-1]-dates[0])/4.0
+#xticklist = np.arange(dates[0],dates[-1],increment-0.1)
+#plt.xticks( xticklist )
+#plt.axis([dates[0],dates[-1],0,200])		# reset the axes to max at 200
+increment = ((endnum-startnum)/4.)
+xticklist = np.arange(startnum, endnum, increment-0.1)
+plt.xticks( xticklist )
+plt.axis([startnum, endnum, 0, 200])		        
+
+plt.savefig('caltech.jpg')
