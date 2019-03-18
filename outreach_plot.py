@@ -43,7 +43,9 @@ endnum = matplotlib.dates.date2num(end)
 if len(sys.argv) != 2:
     print("Usage: python %s <input.txt>" % sys.argv[0])
     sys.exit()
-data = np.genfromtxt(sys.argv[1], dtype="int32")
+input_file = sys.argv[1]
+output_prefix = input_file.split('.')[0]
+data = np.genfromtxt(input_file, dtype="int32")
 month = data[:,0]
 day = data[:,1]
 year = data[:,2]
@@ -102,7 +104,7 @@ ax = plt.gca()
 ax.set_yscale('log')
 ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
 plt.axis([startnum, endnum, 10, 3000])		        
-plt.savefig('caltech_outreach_timeline.png')
+plt.savefig('%s_timeline.png' % output_prefix)
 
 # Histogram plot
 year_range = list(range(start.year, end.year+1))
@@ -177,4 +179,4 @@ ax.text(0.02, 0.72, "Includes Number of Events", horizontalalignment='left', ver
 ax.text(0.02, 0.67, "For Each Category in White", horizontalalignment='left', verticalalignment='center', color='k', transform=ax.transAxes)
 plt.ylabel('Number of Attendees')
 plt.title('Caltech Astronomy Outreach Event Attendance By Year')
-plt.savefig('caltech_outreach_histogram.png')
+plt.savefig('%s_histogram.png' % output_prefix)
