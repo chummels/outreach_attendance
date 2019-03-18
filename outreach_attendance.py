@@ -23,7 +23,7 @@ Example:
 
 Run script as:
 
-$ python outreach_attenance.py input.txt
+$ python outreach_attenance.py caltech.txt
 '''
 import matplotlib
 import matplotlib.pyplot as plt
@@ -32,12 +32,6 @@ import matplotlib.ticker
 import datetime
 import numpy as np
 import sys
-
-# Set the start and end dates for the plotting range
-start = datetime.date(2011, 1, 1)
-end = datetime.date(2019, 4, 1)
-startnum = matplotlib.dates.date2num(start)
-endnum = matplotlib.dates.date2num(end)
 
 # Input data from text file
 if len(sys.argv) != 2:
@@ -51,6 +45,18 @@ day = data[:,1]
 year = data[:,2]
 number = data[:,3]
 code = data[:,4]
+
+start_year = data[:,2].min()
+end_year = data[:,2].max()
+start = datetime.date(start_year, 1, 1)
+end = datetime.date(end_year, 12, 31)
+
+# Force the start and end dates for the plotting range
+# Uncomment to use; otherwise defined automatically from input
+#start = datetime.date(2011, 1, 1)
+#end = datetime.date(2019, 4, 1)
+startnum = matplotlib.dates.date2num(start)
+endnum = matplotlib.dates.date2num(end)
 
 # Create empty arrays for plotting against each other
 dates = []
@@ -96,7 +102,7 @@ if len(other_dates) > 0:
 plt.legend(loc=2, numpoints=1)
 plt.xlabel('Date')
 plt.ylabel('Number of Attendees')
-plt.title('Caltech Astronomy Outreach Event Attendance')
+plt.title('%s Astronomy Outreach Event Attendance' % output_prefix.capitalize())
 locator = matplotlib.dates.YearLocator()
 plt.gca().xaxis.set_major_locator(locator)
 plt.gcf().autofmt_xdate()
@@ -178,5 +184,5 @@ plt.xlabel('Year')
 ax.text(0.02, 0.72, "Includes Number of Events", horizontalalignment='left', verticalalignment='center', color='k', transform=ax.transAxes)
 ax.text(0.02, 0.67, "For Each Category in White", horizontalalignment='left', verticalalignment='center', color='k', transform=ax.transAxes)
 plt.ylabel('Number of Attendees')
-plt.title('Caltech Astronomy Outreach Event Attendance By Year')
+plt.title('%s Astronomy Outreach Event Attendance By Year' % output_prefix.capitalize())
 plt.savefig('%s_histogram.png' % output_prefix)
