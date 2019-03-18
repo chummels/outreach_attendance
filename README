@@ -1,0 +1,24 @@
+This script is for generating two figures associated with the attendance
+at various outreach activities throughout the year.  One is a histogram
+of outreach events per year and their total attendance, the other is just
+a scatter plot showing attendance at each event as a function of date.
+
+The input for this script is a text file listing each event as a
+separate line employing the following format:
+
+# month day year attendees event_code
+# where event_code is:
+0 = lecture/stargazing
+2 = astro on tap
+3 = special event (eclipse, science fair)
+4 = guerilla astronomy
+
+Example:
+
+03 24 2011   20 3
+07 19 2013  100 0
+10 17 2016  130 2
+
+Run script as:
+
+$ python outreach_plot.py input.txt
