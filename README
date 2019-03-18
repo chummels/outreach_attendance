@@ -21,4 +21,4 @@ Example:
 
 Run script as:
 
-$ python outreach_plot.py input.txt
+$ python outreach_attendance.py input.txt

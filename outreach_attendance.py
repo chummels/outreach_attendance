@@ -23,7 +23,7 @@ Example:
 
 Run script as:
 
-$ python outreach_plot.py input.txt
+$ python outreach_attenance.py input.txt
 '''
 import matplotlib
 import matplotlib.pyplot as plt
