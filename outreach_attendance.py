@@ -14,6 +14,7 @@ separate line employing the following format:
 2 = astro on tap
 3 = special event (eclipse, science fair)
 4 = guerilla astronomy
+5 = foreign language
 
 Example:
 
@@ -68,6 +69,8 @@ other_dates = []
 other_num = []
 guerilla_dates = []
 guerilla_num = []
+foreign_dates = []
+foreign_num = []
 
 # Populate the arrays with appropriate dates and corresponding turnout
 for i in range(len(month)):
@@ -89,6 +92,10 @@ for i in range(len(month)):
 		guerilla_dates.append(new_date)
 		guerilla_num.append(number[i])
 		dates.append(new_date)
+	elif (code[i] == 5):
+		foreign_dates.append(new_date)
+		foreign_num.append(number[i])
+		dates.append(new_date)
 
 # Plot the stuff!
 if len(lecture_dates) > 0:
@@ -99,6 +106,8 @@ if len(guerilla_dates) > 0:
     plt.plot_date(guerilla_dates, guerilla_num, 'yo', label='Guerilla Astro')
 if len(other_dates) > 0:
     plt.plot_date(other_dates, other_num, 'ro', label='Special Event')
+if len(foreign_dates) > 0:
+    plt.plot_date(foreign_dates, foreign_num, 'mo', label='Foreign Language')
 plt.legend(loc=2, numpoints=1)
 plt.xlabel('Date')
 plt.ylabel('Number of Attendees')
@@ -109,7 +118,7 @@ plt.gcf().autofmt_xdate()
 ax = plt.gca()
 ax.set_yscale('log')
 ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
-plt.axis([startnum, endnum, 10, 3000])		        
+plt.axis([startnum, endnum, 10, 10000])
 plt.savefig('%s_timeline.png' % output_prefix)
 
 # Histogram plot
