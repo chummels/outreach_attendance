@@ -58,6 +58,18 @@ end = datetime.date(end_year, 12, 31)
 #end = datetime.date(2019, 4, 1)
 startnum = matplotlib.dates.date2num(start)
 endnum = matplotlib.dates.date2num(end)
+cameron_start = datetime.date(2015, 10, 1)
+cameron_text = datetime.date(2015, 11, 1)
+pandemic_start = datetime.date(2020, 3, 15)
+pandemic_text = datetime.date(2020, 4, 15)
+pandemic_end = datetime.date(2022, 6, 15)
+pandemic_end_text = datetime.date(2022, 7, 15)
+cameron_start_num = matplotlib.dates.date2num(cameron_start)
+cameron_text_num = matplotlib.dates.date2num(cameron_text)
+pandemic_start_num = matplotlib.dates.date2num(pandemic_start)
+pandemic_text_num = matplotlib.dates.date2num(pandemic_text)
+pandemic_end_num = matplotlib.dates.date2num(pandemic_end)
+pandemic_end_text_num = matplotlib.dates.date2num(pandemic_end_text)
 
 # Create empty arrays for plotting against each other
 dates = []
@@ -99,15 +111,15 @@ for i in range(len(month)):
 
 # Plot the stuff!
 if len(lecture_dates) > 0:
-    plt.plot_date(lecture_dates, lecture_num, 'bo', label='Lecture/Stargazing')
+    plt.plot_date(lecture_dates, lecture_num, 'bo', label='Lecture/Stargazing', alpha=0.6)
 if len(aot_dates) > 0:
-    plt.plot_date(aot_dates, aot_num, 'go', label='Astronomy on Tap')
+    plt.plot_date(aot_dates, aot_num, 'go', label='Astronomy on Tap', alpha=0.6)
 if len(guerilla_dates) > 0:
-    plt.plot_date(guerilla_dates, guerilla_num, 'yo', label='Guerilla Astro')
+    plt.plot_date(guerilla_dates, guerilla_num, 'yo', label='Guerilla Astro', alpha=0.6)
 if len(other_dates) > 0:
-    plt.plot_date(other_dates, other_num, 'ro', label='Special Event')
+    plt.plot_date(other_dates, other_num, 'ro', label='Special Event', alpha=0.6)
 if len(foreign_dates) > 0:
-    plt.plot_date(foreign_dates, foreign_num, 'mo', label='Foreign Language')
+    plt.plot_date(foreign_dates, foreign_num, 'mo', label='Foreign Language', alpha=0.6)
 plt.legend(loc=2, numpoints=1)
 plt.xlabel('Date')
 plt.ylabel('Number of Attendees')
@@ -119,6 +131,12 @@ ax = plt.gca()
 ax.set_yscale('log')
 ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
 plt.axis([startnum, endnum, 10, 10000])
+plt.plot([cameron_start_num, cameron_start_num], [10,10000], color='k')
+plt.text(cameron_text_num, 300, 'CBH Begins at Caltech', rotation='vertical', color='k', weight='book')
+plt.plot([pandemic_start_num, pandemic_start_num], [10,10000], color='k')
+plt.text(pandemic_text_num, 800, 'Pandemic Begins', rotation='vertical', color='k', weight='book')
+#plt.plot([pandemic_end_num, pandemic_end_num], [10,10000], color='k')
+#plt.text(pandemic_end_text_num, 300, 'Restart In-Person Events', rotation='vertical', color='k', weight='book')
 plt.savefig('%s_timeline.png' % output_prefix)
 
 # Histogram plot
@@ -184,8 +202,16 @@ p1 = plt.bar(year_range, other_tot, color=u'r', bottom=foreign_tot, width=.9)
 p2 = plt.bar(year_range, guerilla_tot, color=u'y', bottom=foreign_tot+other_tot, width=.9)
 p3 = plt.bar(year_range, aot_tot, color=u'g', bottom=foreign_tot+other_tot+guerilla_tot, width=.9)
 p4 = plt.bar(year_range, lecture_tot, color=u'b', bottom=foreign_tot+other_tot+guerilla_tot+aot_tot, width=.9)
+total = 0
+for i,year in enumerate(year_range):
+    print("%d: %d events; %d attendees" % (year_range[i], \
+        foreign_num_events[i]+other_num_events[i]+guerilla_num_events[i]+aot_num_events[i]+lecture_num_events[i], \
+        foreign_tot[i]+other_tot[i]+guerilla_tot[i]+aot_tot[i]+lecture_tot[i]))
+    total += foreign_tot[i]+other_tot[i]+guerilla_tot[i]+aot_tot[i]+lecture_tot[i]
+print("Total Events: %d" % total)
+print("Total Attendance: %d" % total)
 
-min_threshold = 400
+min_threshold = 250
 all_tot = np.concatenate((foreign_tot, other_tot, guerilla_tot, aot_tot, lecture_tot))
 all_num_events = np.concatenate((foreign_num_events, other_num_events, guerilla_num_events, aot_num_events, lecture_num_events))
 big_activities = all_tot > min_threshold
