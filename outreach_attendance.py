@@ -131,8 +131,8 @@ ax = plt.gca()
 ax.set_yscale('log')
 ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
 plt.axis([startnum, endnum, 10, 10000])
-plt.plot([cameron_start_num, cameron_start_num], [10,10000], color='k')
-plt.text(cameron_text_num, 300, 'CBH Begins at Caltech', rotation='vertical', color='k', weight='book')
+#plt.plot([cameron_start_num, cameron_start_num], [10,10000], color='k')
+#plt.text(cameron_text_num, 300, 'CBH Begins at Caltech', rotation='vertical', color='k', weight='book')
 plt.plot([pandemic_start_num, pandemic_start_num], [10,10000], color='k')
 plt.text(pandemic_text_num, 800, 'Pandemic Begins', rotation='vertical', color='k', weight='book')
 #plt.plot([pandemic_end_num, pandemic_end_num], [10,10000], color='k')
@@ -202,14 +202,16 @@ p1 = plt.bar(year_range, other_tot, color=u'r', bottom=foreign_tot, width=.9)
 p2 = plt.bar(year_range, guerilla_tot, color=u'y', bottom=foreign_tot+other_tot, width=.9)
 p3 = plt.bar(year_range, aot_tot, color=u'g', bottom=foreign_tot+other_tot+guerilla_tot, width=.9)
 p4 = plt.bar(year_range, lecture_tot, color=u'b', bottom=foreign_tot+other_tot+guerilla_tot+aot_tot, width=.9)
-total = 0
+total_events = 0
+total_attendees = 0
 for i,year in enumerate(year_range):
     print("%d: %d events; %d attendees" % (year_range[i], \
         foreign_num_events[i]+other_num_events[i]+guerilla_num_events[i]+aot_num_events[i]+lecture_num_events[i], \
         foreign_tot[i]+other_tot[i]+guerilla_tot[i]+aot_tot[i]+lecture_tot[i]))
-    total += foreign_tot[i]+other_tot[i]+guerilla_tot[i]+aot_tot[i]+lecture_tot[i]
-print("Total Events: %d" % total)
-print("Total Attendance: %d" % total)
+    total_events += foreign_num_events[i]+other_num_events[i]+guerilla_num_events[i]+aot_num_events[i]+lecture_num_events[i]
+    total_attendees += foreign_tot[i]+other_tot[i]+guerilla_tot[i]+aot_tot[i]+lecture_tot[i]
+print("Total Events: %d" % total_events)
+print("Total Attendance: %d" % total_attendees)
 
 min_threshold = 250
 all_tot = np.concatenate((foreign_tot, other_tot, guerilla_tot, aot_tot, lecture_tot))
