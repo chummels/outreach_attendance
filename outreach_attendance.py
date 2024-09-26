@@ -118,17 +118,17 @@ for i in range(len(month)):
 
 # Plot the stuff!
 if len(lecture_dates) > 0:
-    plt.plot_date(lecture_dates, lecture_num, 'bo', label='Lecture/Stargazing', alpha=0.6)
+    plt.plot(lecture_dates, lecture_num, 'bo', label='Lecture/Stargazing', alpha=0.6)
 if len(aot_dates) > 0:
-    plt.plot_date(aot_dates, aot_num, 'go', label='Astronomy on Tap', alpha=0.6)
+    plt.plot(aot_dates, aot_num, 'go', label='Astronomy on Tap', alpha=0.6)
 if len(guerilla_dates) > 0:
-    plt.plot_date(guerilla_dates, guerilla_num, 'yo', label='Guerilla Astro', alpha=0.6)
+    plt.plot(guerilla_dates, guerilla_num, 'yo', label='Guerilla Astro', alpha=0.6)
 if len(other_dates) > 0:
-    plt.plot_date(other_dates, other_num, 'ro', label='Special Event', alpha=0.6)
+    plt.plot(other_dates, other_num, 'ro', label='Special Event', alpha=0.6)
 if len(foreign_dates) > 0:
-    plt.plot_date(foreign_dates, foreign_num, 'mo', label='Foreign Language', alpha=0.6)
+    plt.plot(foreign_dates, foreign_num, 'mo', label='Foreign Language', alpha=0.6)
 if len(school_dates) > 0:
-    plt.plot_date(school_dates, school_num, 'co', label='School Visits', alpha=0.6)
+    plt.plot(school_dates, school_num, 'co', label='School Visits', alpha=0.6)
 plt.legend(loc=2, numpoints=1)
 plt.xlabel('Date')
 plt.ylabel('Number of Attendees')
