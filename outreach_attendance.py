@@ -15,6 +15,7 @@ separate line employing the following format:
 3 = special event (eclipse, science fair)
 4 = guerilla astronomy
 5 = foreign language
+6 = school/scout events
 
 Example:
 
@@ -83,6 +84,8 @@ guerilla_dates = []
 guerilla_num = []
 foreign_dates = []
 foreign_num = []
+school_dates = []
+school_num = []
 
 # Populate the arrays with appropriate dates and corresponding turnout
 for i in range(len(month)):
@@ -108,6 +111,10 @@ for i in range(len(month)):
 		foreign_dates.append(new_date)
 		foreign_num.append(number[i])
 		dates.append(new_date)
+	elif (code[i] == 6):
+		school_dates.append(new_date)
+		school_num.append(number[i])
+		dates.append(new_date)
 
 # Plot the stuff!
 if len(lecture_dates) > 0:
@@ -120,6 +127,8 @@ if len(other_dates) > 0:
     plt.plot_date(other_dates, other_num, 'ro', label='Special Event', alpha=0.6)
 if len(foreign_dates) > 0:
     plt.plot_date(foreign_dates, foreign_num, 'mo', label='Foreign Language', alpha=0.6)
+if len(school_dates) > 0:
+    plt.plot_date(school_dates, school_num, 'co', label='School Visits', alpha=0.6)
 plt.legend(loc=2, numpoints=1)
 plt.xlabel('Date')
 plt.ylabel('Number of Attendees')
@@ -130,10 +139,10 @@ plt.gcf().autofmt_xdate()
 ax = plt.gca()
 ax.set_yscale('log')
 ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
-plt.axis([startnum, endnum, 10, 10000])
+plt.axis([startnum, endnum, 10, 20000])
 #plt.plot([cameron_start_num, cameron_start_num], [10,10000], color='k')
 #plt.text(cameron_text_num, 300, 'CBH Begins at Caltech', rotation='vertical', color='k', weight='book')
-plt.plot([pandemic_start_num, pandemic_start_num], [10,10000], color='k')
+plt.plot([pandemic_start_num, pandemic_start_num], [10,20000], color='k')
 plt.text(pandemic_text_num, 800, 'Pandemic Begins', rotation='vertical', color='k', weight='book')
 #plt.plot([pandemic_end_num, pandemic_end_num], [10,10000], color='k')
 #plt.text(pandemic_end_text_num, 300, 'Restart In-Person Events', rotation='vertical', color='k', weight='book')
@@ -146,11 +155,13 @@ aot_tot = np.empty(len(year_range))
 guerilla_tot = np.empty(len(year_range))
 other_tot = np.empty(len(year_range))
 foreign_tot = np.empty(len(year_range))
+school_tot = np.empty(len(year_range))
 lecture_num_events = np.empty(len(year_range))
 aot_num_events = np.empty(len(year_range))
 guerilla_num_events = np.empty(len(year_range))
 other_num_events = np.empty(len(year_range))
 foreign_num_events = np.empty(len(year_range))
+school_num_events = np.empty(len(year_range))
 
 # Add up each category of events
 for i, year in enumerate(year_range):
@@ -194,28 +205,37 @@ for i, year in enumerate(year_range):
             num_events += 1
     foreign_tot[i] = num_attendees
     foreign_num_events[i] = num_events
+    num_attendees = 0
+    num_events = 0
+    for j in range(len(school_dates)):
+        if matplotlib.dates.num2date(school_dates[j]).year == year:
+            num_attendees += school_num[j]
+            num_events += 1
+    school_tot[i] = num_attendees
+    school_num_events[i] = num_events
 
 # Plot the histogram stuff!
 fig, ax = plt.subplots(1,1)
-p0 = plt.bar(year_range, foreign_tot, color=u'm', width=.9)
-p1 = plt.bar(year_range, other_tot, color=u'r', bottom=foreign_tot, width=.9)
-p2 = plt.bar(year_range, guerilla_tot, color=u'y', bottom=foreign_tot+other_tot, width=.9)
-p3 = plt.bar(year_range, aot_tot, color=u'g', bottom=foreign_tot+other_tot+guerilla_tot, width=.9)
-p4 = plt.bar(year_range, lecture_tot, color=u'b', bottom=foreign_tot+other_tot+guerilla_tot+aot_tot, width=.9)
+p0 = plt.bar(year_range, school_tot, color=u'c', width=.9)
+p1 = plt.bar(year_range, foreign_tot, color=u'm',bottom=school_tot, width=.9)
+p2 = plt.bar(year_range, other_tot, color=u'r', bottom=school_tot+foreign_tot, width=.9)
+p3 = plt.bar(year_range, guerilla_tot, color=u'y', bottom=school_tot+foreign_tot+other_tot, width=.9)
+p4 = plt.bar(year_range, aot_tot, color=u'g', bottom=school_tot+foreign_tot+other_tot+guerilla_tot, width=.9)
+p5 = plt.bar(year_range, lecture_tot, color=u'b', bottom=school_tot+foreign_tot+other_tot+guerilla_tot+aot_tot, width=.9)
 total_events = 0
 total_attendees = 0
 for i,year in enumerate(year_range):
     print("%d: %d events; %d attendees" % (year_range[i], \
-        foreign_num_events[i]+other_num_events[i]+guerilla_num_events[i]+aot_num_events[i]+lecture_num_events[i], \
-        foreign_tot[i]+other_tot[i]+guerilla_tot[i]+aot_tot[i]+lecture_tot[i]))
-    total_events += foreign_num_events[i]+other_num_events[i]+guerilla_num_events[i]+aot_num_events[i]+lecture_num_events[i]
-    total_attendees += foreign_tot[i]+other_tot[i]+guerilla_tot[i]+aot_tot[i]+lecture_tot[i]
+        school_num_events[i]+foreign_num_events[i]+other_num_events[i]+guerilla_num_events[i]+aot_num_events[i]+lecture_num_events[i], \
+        school_tot[i]+foreign_tot[i]+other_tot[i]+guerilla_tot[i]+aot_tot[i]+lecture_tot[i]))
+    total_events += school_num_events[i]+foreign_num_events[i]+other_num_events[i]+guerilla_num_events[i]+aot_num_events[i]+lecture_num_events[i]
+    total_attendees += school_tot[i]+foreign_tot[i]+other_tot[i]+guerilla_tot[i]+aot_tot[i]+lecture_tot[i]
 print("Total Events: %d" % total_events)
 print("Total Attendance: %d" % total_attendees)
 
 min_threshold = 250
-all_tot = np.concatenate((foreign_tot, other_tot, guerilla_tot, aot_tot, lecture_tot))
-all_num_events = np.concatenate((foreign_num_events, other_num_events, guerilla_num_events, aot_num_events, lecture_num_events))
+all_tot = np.concatenate((school_tot, foreign_tot, other_tot, guerilla_tot, aot_tot, lecture_tot))
+all_num_events = np.concatenate((school_num_events, foreign_num_events, other_num_events, guerilla_num_events, aot_num_events, lecture_num_events))
 big_activities = all_tot > min_threshold
 all_num_events = all_num_events[big_activities]
 all_tot = all_tot[big_activities]
@@ -227,10 +247,10 @@ for i, child in enumerate(children2):
     y = (bbox.y1 + bbox.y0)/2
     ax.text(x, y, "%d" % all_num_events[i], horizontalalignment='center', verticalalignment='center', color='w', transform=ax.transData)
 
-plt.legend((p4[0], p3[0], p2[0], p1[0], p0[0]), ('Lecture/Stargazing', 'Astronomy on Tap', 'Guerilla Astro', 'Special Events', 'Foreign Language'), loc=2)
+plt.legend((p5[0], p4[0], p3[0], p2[0], p1[0], p0[0]), ('Lecture/Stargazing', 'Astronomy on Tap', 'Guerilla Astro', 'Special Events', 'Foreign Language', 'School Visits'), loc=2)
 plt.xlabel('Year')
-ax.text(0.02, 0.65, "Includes Number of Events", horizontalalignment='left', verticalalignment='center', color='k', transform=ax.transAxes)
-ax.text(0.02, 0.60, "For Each Category in White", horizontalalignment='left', verticalalignment='center', color='k', transform=ax.transAxes)
+ax.text(0.02, 0.60, "Includes Number of Events", horizontalalignment='left', verticalalignment='center', color='k', transform=ax.transAxes)
+ax.text(0.02, 0.55, "For Each Category in White", horizontalalignment='left', verticalalignment='center', color='k', transform=ax.transAxes)
 plt.ylabel('Number of Attendees')
 plt.title('%s Astronomy Outreach Event Attendance By Year' % output_prefix.capitalize())
 plt.savefig('%s_histogram.png' % output_prefix)
