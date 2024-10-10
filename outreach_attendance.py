@@ -89,8 +89,7 @@ school_num = []
 
 # Populate the arrays with appropriate dates and corresponding turnout
 for i in range(len(month)):
-	temp_date = datetime.date(year[i],month[i],day[i])
-	new_date =  matplotlib.dates.date2num(temp_date)
+	new_date = datetime.date(year[i],month[i],day[i])
 	if (code[i] == 0):
 		lecture_dates.append(new_date)
 		lecture_num.append(number[i])
@@ -168,7 +167,7 @@ for i, year in enumerate(year_range):
     num_attendees = 0
     num_events = 0
     for j in range(len(lecture_dates)):
-        if matplotlib.dates.num2date(lecture_dates[j]).year == year:
+        if (lecture_dates[j]).year == year:
             num_attendees += lecture_num[j]
             num_events += 1
     lecture_tot[i] = num_attendees    
@@ -176,7 +175,7 @@ for i, year in enumerate(year_range):
     num_attendees = 0
     num_events = 0
     for j in range(len(aot_dates)):
-        if matplotlib.dates.num2date(aot_dates[j]).year == year:
+        if (aot_dates[j]).year == year:
             num_attendees += aot_num[j]
             num_events += 1
     aot_tot[i] = num_attendees    
@@ -184,7 +183,7 @@ for i, year in enumerate(year_range):
     num_attendees = 0
     num_events = 0
     for j in range(len(guerilla_dates)):
-        if matplotlib.dates.num2date(guerilla_dates[j]).year == year:
+        if (guerilla_dates[j]).year == year:
             num_attendees += guerilla_num[j]
             num_events += 1
     guerilla_tot[i] = num_attendees    
@@ -192,7 +191,7 @@ for i, year in enumerate(year_range):
     num_attendees = 0
     num_events = 0
     for j in range(len(other_dates)):
-        if matplotlib.dates.num2date(other_dates[j]).year == year:
+        if (other_dates[j]).year == year:
             num_attendees += other_num[j]
             num_events += 1
     other_tot[i] = num_attendees    
@@ -200,7 +199,7 @@ for i, year in enumerate(year_range):
     num_attendees = 0
     num_events = 0
     for j in range(len(foreign_dates)):
-        if matplotlib.dates.num2date(foreign_dates[j]).year == year:
+        if (foreign_dates[j]).year == year:
             num_attendees += foreign_num[j]
             num_events += 1
     foreign_tot[i] = num_attendees
@@ -208,7 +207,7 @@ for i, year in enumerate(year_range):
     num_attendees = 0
     num_events = 0
     for j in range(len(school_dates)):
-        if matplotlib.dates.num2date(school_dates[j]).year == year:
+        if (school_dates[j]).year == year:
             num_attendees += school_num[j]
             num_events += 1
     school_tot[i] = num_attendees
